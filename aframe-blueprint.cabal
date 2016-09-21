@@ -1,0 +1,45 @@
+name:                aframe-blueprint
+version:             0.1.0.0
+-- synopsis:            
+-- description:         
+license:             BSD3
+license-file:        LICENSE
+author:              Andy Gill
+maintainer:          andygill@ku.edu
+-- copyright:           
+-- category:            
+build-type:          Simple
+extra-source-files:  README.md
+cabal-version:       >=1.10
+
+data-files:
+            static/index.html
+
+library
+  exposed-modules:     Text.AFrame
+                 ,     Text.AFrame.Geometry
+                 ,     Text.AFrame.DSL
+  -- other-modules:       
+  -- other-extensions:    
+  build-depends:       base >=4.8 && <4.9
+--               ,       aeson == 0.11.*
+--               ,       bytestring
+--               ,       filepath == 1.4.*
+--               ,       natural-transformation == 0.3.1
+--               ,       scotty == 0.11.*
+                 ,       text == 1.2.*
+--               ,       transformers == 0.4.*
+--               ,       utf8-string == 1.0.*
+--               ,       wai-middleware-static == 0.8.0
+--               ,       stm == 2.4.* 
+--               ,       wai-extra == 3.0.*
+                 ,       taggy == 0.2.*
+                 ,       containers == 0.5.*
+                 ,       unordered-containers == 0.2.*
+--               ,       QuickCheck == 2.8.*
+                 ,       microlens == 0.4.7.*
+  other-modules:      Paths_aframe_blueprint
+  GHC-options: -threaded
+  hs-source-dirs:      src
+  default-language:    Haskell2010
+  
