@@ -40,7 +40,7 @@ example = scene $ do
   sky $ color "#ECECEC"
   
   entity $ do
-    position (0,0,5.8)
+    position (0,0,3.8)
     camera $ return ()
 
 
@@ -68,9 +68,9 @@ editExample = scene $ do
   
   plane $ do
     rotation (-90,0,0)
-    width  4
-    height 4
-    color "#7BC8A4"
+    width    4
+    height   4
+    color    "#7BC8A4"
 
   sky $ color "#ECECEC"
   
