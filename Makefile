@@ -16,3 +16,6 @@ examples/hello-edit/index.html: examples/src/Main.hs
 
 server::
 	npm run dev &
+
+haskell::
+	fswatch -0 examples/src/ | xargs -0 -n 1 -I {} make boot
