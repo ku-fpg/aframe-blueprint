@@ -1,0 +1,26 @@
+{
+  "name": "aframe-blueprint",
+  "version": "1.0.0",
+  "description": "Haskell EDSL for Aframe",
+  "main": "index.js",
+  "directories": {
+    "example": "examples"
+  },
+  "devDependencies": {
+    "budo": "^9.2.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "budo --dir examples --port 8008 --live --open"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ku-fpg/aframe-blueprint.git"
+  },
+  "author": "",
+  "license": "BSD",
+  "bugs": {
+    "url": "https://github.com/ku-fpg/aframe-blueprint/issues"
+  },
+  "homepage": "https://github.com/ku-fpg/aframe-blueprint"
+}
