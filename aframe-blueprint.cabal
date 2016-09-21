@@ -19,6 +19,7 @@ library
   exposed-modules:     Text.AFrame
                  ,     Text.AFrame.Geometry
                  ,     Text.AFrame.DSL
+                 ,     Text.AFrame.WebPage
   -- other-modules:       
   -- other-extensions:    
   build-depends:       base >=4.8 && <4.9
@@ -45,8 +46,9 @@ library
   
 executable aframe-blueprint-examples
   main-is:  Main.hs
-  build-depends:       base >=4.8 && <4.9
-               ,       aframe-blueprint == 0.1.0.0
+  build-depends:         base >=4.8 && <4.9
+                 ,       aframe-blueprint == 0.1.0.0
+                 ,       text == 1.2.*
   
   GHC-options: -threaded
   hs-source-dirs:      examples/src
