@@ -3,7 +3,7 @@
 # Examples
 #
 boot::  examples/hello-world/index.html \
-        examples/hello-edit/index.html
+        examples/hello-edit/index.html 
 	echo done        
 
 examples/hello-world/index.html: examples/src/Main.hs

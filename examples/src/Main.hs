@@ -48,13 +48,14 @@ editExample :: AFrame
 editExample = scene $ do
 
   sphere $ do
-    position (0,1.25,-1)
+    y <- numberSelector "y position" 1.25 (-1,10)
+    position (0,y,-1)
     radius   1.25
     color    "#EF2D5E"
 
   box $ do
     position (-1,0.5,1)
-    rotation (0,45,0)
+    rotation ?(0,45,0)
     width    1
     height   1
     scale   (1,1,1)

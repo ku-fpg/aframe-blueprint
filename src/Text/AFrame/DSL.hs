@@ -577,18 +577,18 @@ colorSelector txt (Color e) = do
     attribute "name"  txt
     return $ Color $ Dynamic (Var uq) start
 
-numberSelector :: Text -> Double -> Maybe (Double,Double) -> DSL Number
-numberSelector txt start lowHigh = do
+numberSelector :: Text -> Double -> (Double,Double) -> DSL Number
+numberSelector txt start (low,high) = do
   Property uq <- uniqId
   primitiveEntity "a-number-selector" $ do
     id_ uq
     attribute "value" start
     attribute "name"  txt
-    case lowHigh of
-      Just (low,high) -> do
-        attribute "min"   low
-        attribute "max"   high
-      Nothing -> return ()
+    attribute "min"   low
+    attribute "max"   high
+    let steps n | n > 100 = 1 :: Double
+        steps n = steps (n*10) / 10
+    attribute "step"  $ steps (high-low)
               
     return $ Number $ Dynamic (Var uq) $ start
 
@@ -596,9 +596,9 @@ numberSelector txt start lowHigh = do
 vec3Selector :: Text -> (Double,Double,Double) -> (Double,Double) -> DSL (Number,Number,Number)
 vec3Selector nm (x,y,z) (mx,mn) = do
   selectionFolder nm $ do
-    x <- numberSelector "x" x $ return (mx,mn)
-    y <- numberSelector "y" y $ return (mx,mn)
-    z <- numberSelector "z" z $ return (mx,mn)
+    x <- numberSelector "x" x $ (mx,mn)
+    y <- numberSelector "y" y $ (mx,mn)
+    z <- numberSelector "z" z $ (mx,mn)
     return (x,y,z)
 
 class EditProperty p where
@@ -612,10 +612,10 @@ instance EditProperty (Number,Number,Number) where
               mx = maximum [x0,y0,z0]
               mn = minimum [x0,y0,z0]
               (txt,range) = case guessLabel (pure () <* fn a) of
-                       Just lab | lab == "rotation" -> ("rotation", return (min (-180) mn , max 360 mx))
-                                | lab == "scale"    -> ("scale",    return (min (-1) mn   , max 10 mx))
-                                | lab == "position" -> ("position", return (min (-10) mn  , max 10 mx))
-                       _                            -> ("vec3",     Nothing)
+                       Just lab | lab == "rotation" -> ("rotation", (min (-180) mn , max 360 mx))
+                                | lab == "scale"    -> ("scale",    (min (-1) mn   , max 10 mx))
+                                | lab == "position" -> ("position", (min (-10) mn  , max 10 mx))
+                       _                            -> ("vec3",     (min (-100) mn, max 100 mx))
                        
           (x,y,z) <- selectionFolder txt $ do
             x <- numberSelector "x" x0 range
@@ -629,7 +629,7 @@ instance EditProperty Number where
   fn ? (Number x) = do
           let x0 = initial x
               range = Nothing
-          x <- numberSelector "number" x0 range
+          x <- numberSelector "number" x0 (min (-100) x0, max 100 x0)
           fn x
 
 instance EditProperty Color where
