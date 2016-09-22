@@ -14,6 +14,9 @@ examples/hello-edit/index.html: examples/src/Main.hs
 	mkdir -p examples/hello-edit
 	cabal exec runghc examples/src/Main.hs hello-edit $@
 
+clean:
+	rm -f examples/*/*html
+
 server::
 	npm run dev &
 
