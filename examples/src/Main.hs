@@ -64,7 +64,7 @@ editExample = scene $ do
     position (1,0.75,1) 
     radius   0.5
     height   1.5
-    color    "#FFC65D"
+    color   ?"#FFC65D"
   
   plane $ do
     rotation (-90,0,0)
