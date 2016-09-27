@@ -6,7 +6,6 @@ import Data.Monoid ((<>))
 import Control.Applicative ((<|>))
 
 import Debug.Trace
---import Test.QuickCheck
 
 --------------------------------------------------------------------------------------------------------
 
@@ -275,89 +274,3 @@ intersectTriangle (Triangle p0 p1 p2) (x,y)
     v = dotProduct dir qvec * invDet
     
     t = dotProduct p0p2 qvec * invDet
-------------------------------------------------------------------------------------
--- Testing
-
-draw :: Double -> Char
-draw n | n > 1.5 = '#'
-       | n > 0.5 = '*'
-       | otherwise = last $ show (round n :: Int)
-
-
-splat :: ((Double,Double) -> Maybe Char) -> String
-splat f = unlines 
-        [ [ case f (x,y) of
-              Nothing -> '.'
-              Just c -> c
-          | x <- fmap (*2) $ fmap (/xsz) $ fmap (subtract xsz) $ [0..(xsz*2)]
-          ]
-        | y <- reverse $ fmap (*2) $ fmap (/ysz) $ fmap (subtract ysz) $ [0..(ysz*2)]
-        ]
- where
-    xsz = 50
-    ysz = 20
-
--- Quad goes counter-clock
-plane :: Fractional a => a -> a -> Quad a
-plane w h = Quad (Position (-w/2,h/2,0)) (Position (-w/2,-h/2,0)) (Position (w/2,-h/2,0)) (Position (w/2,h/2,0))
-
--- For testing
-{-
-newtype Degree = Degree (Double,Double,Double)
- deriving Show
-
-instance Arbitrary Degree where
-  arbitrary = (\ a b c -> Degree (a,b,c))
-                     <$> choose (-360,360)
-                     <*> choose (-360,360)
-                     <*> choose (-360,360)
-
--- Check comparePolygon function
-prop_compare (Degree lr) (Degree rr) (Degree cr) =
---  trace (splat $ fmap (fmap draw) $ intersectQuads [p1,p2]) False
-    forAll (elements points) $ \ (x,y) ->
-    case (intersectQuad p1 (x,y), intersectQuad p2 (x,y)) of
-      (Just z1,Just z2) -> case cmp of
-        Behind          -> True ==> if z1 < z2 then True else trace (msg (x,y) z1 z2) False
-        InFront         -> True ==> if z1 > z2 then True else trace (msg (x,y) z1 z2) False
-        Disjoint        -> True ==> True
-        Indeterminate   -> True ==> True -- trace (msg (x,y) z1 z2) False -- error "should never be indeterminate"
-      _                 -> False ==> True
-   where
-     -- ((x,y),z1,z2,cmp)
-     msg (x,y) z1 z2 = "\n" ++ 
-       unlines [ "x: " ++ show x
-               , "y: " ++ show y
-               , "z1: " ++ show z1
-               , "z2: " ++ show z2
-               , "cmp: " ++ show cmp
-               , "p1: " ++ show p1
-               , "p2: " ++ show p2
-               ] ++ (splat $ fmap (fmap draw) $ intersectQuads (if cmp==Behind then [p2,p1] else [p1,p2]))
-                 ++ "\n"
-
-
-     -- splat $ fmap (fmap draw) $ intersectQuads [p2,p1])
-
-
-     points :: [(Double,Double)] 
-     points = (0,0) : [(x,y) | Position (x,y,z) <- path p1 ++ path p2 ]
-
-     common :: Geometry Double
-     common = position (0,0,-5) <> rotation YXZ cr
-
-     p1 :: Quad Double
-     p1 = run (common <> position (-1.5,0,0) <> rotation YXZ lr) $ plane 2 2
-
-     p2 :: Quad Double
-     p2 = run (common <> position ( 1.5,0,0) <> rotation YXZ rr) $ plane 2 2
-      
-     cmp :: Stacking
-     cmp = comparePolygon p1 p2
-
-qtest = quickCheckWith stdArgs { maxSuccess = 10000, maxDiscardRatio = 1000, chatty = True } prop_compare
-
-intersectQuads :: (Ord a, Fractional a) => [Quad a] -> (a,a) -> Maybe a
-intersectQuads qs p = head $ [ Just r | Just r <- map (\ q' -> intersectQuad q' p) qs ] ++ [Nothing]
-
--}
