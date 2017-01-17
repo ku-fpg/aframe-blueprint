@@ -58,6 +58,8 @@ Test-Suite test-blueprint
      main-is:            tests/Tests.hs
      build-depends:      base
                  ,       aframe-blueprint == 0.1.0.0
-                 ,       QuickCheck == 2.8.*
+                 ,       QuickCheck == 2.9.*
+                 ,       random == 1.1.*
+
      default-language:    Haskell2010
      
