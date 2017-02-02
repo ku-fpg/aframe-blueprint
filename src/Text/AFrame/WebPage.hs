@@ -7,8 +7,14 @@ import Text.AFrame
 import Paths_aframe_blueprint
 
 webPage :: [String] -> AFrame -> IO ()        
-webPage [fileOut] af = do
-    fileIn <- getDataFileName "static/index.html"
+webPage = webPageFromTemplate "static/index.html"
+
+webPageAnimated :: [String] -> AFrame -> IO ()
+webPageAnimated = webPageFromTemplate "static/animated.html"
+
+webPageFromTemplate :: String -> [String] -> AFrame -> IO ()
+webPageFromTemplate template [fileOut] af = do
+    fileIn <- getDataFileName template 
     file <- readFile fileIn
     writeFile fileOut $ injectAFrame af $ file
 
