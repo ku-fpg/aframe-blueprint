@@ -39,7 +39,6 @@ library
                  ,       unordered-containers == 0.2.*
                  ,       microlens == 0.4.7.*
   other-modules:      Paths_aframe_blueprint
-  GHC-options: -threaded
   hs-source-dirs:      src
   default-language:    Haskell2010
   
@@ -47,7 +46,7 @@ library
 executable aframe-blueprint-examples
   main-is:  Main.hs
   build-depends:         base >=4.8 && < 5.0
-                 ,       aframe-blueprint == 0.1.0.0
+                 ,       aframe-blueprint == 0.1.0.1
                  ,       text == 1.2.*
   
   GHC-options: -threaded
@@ -58,7 +57,7 @@ Test-Suite test-blueprint
      type:               exitcode-stdio-1.0
      main-is:            tests/Tests.hs
      build-depends:      base
-                 ,       aframe-blueprint == 0.1.0.0
+                 ,       aframe-blueprint == 0.1.0.1
                  ,       QuickCheck == 2.9.*
                  ,       random == 1.1.*
 
