@@ -1,6 +1,26 @@
 {-# LANGUAGE TupleSections, GeneralizedNewtypeDeriving, RankNTypes, TypeFamilies, ScopedTypeVariables, KindSignatures, GADTs, InstanceSigs, TypeOperators, MultiParamTypeClasses, FlexibleInstances, OverloadedStrings #-}
 
-module Text.AFrame where
+module Text.AFrame 
+ (  -- * Principal Types
+    AFrame(..)
+  , Primitive(..)
+  , Label(..)
+  , Property(..)
+  , Attribute(..)
+  , Path(..)
+    -- * Attribute setter/getter
+  , setAttribute
+  , getAttribute
+  , resetAttribute
+   -- * render AFframe
+  , showAFrame
+    -- * Property Builder
+  , ToProperty(..)
+    -- * nested Property
+  , unpackProperty
+  , packProperty
+  ) where
+ 
 
 import Control.Applicative
 import Lens.Micro
