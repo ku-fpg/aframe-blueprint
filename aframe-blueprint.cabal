@@ -17,7 +17,6 @@ data-files:
 
 library
   exposed-modules:     Text.AFrame
-                 ,     Text.AFrame.Geometry
                  ,     Text.AFrame.DSL
                  ,     Text.AFrame.WebPage
   -- other-modules:       
