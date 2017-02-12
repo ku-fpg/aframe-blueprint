@@ -86,6 +86,7 @@ module Text.AFrame.DSL
     -- * Variable Types
     Color,
     Number,
+    number,
     -- * Unique Property generator
     uniqId,
     -- * Pretty Printer for DSL
@@ -520,6 +521,9 @@ instance IsString Color where
 
 newtype Number = Number (Dynamic Double)
 
+number :: Real a => a -> Number
+number = fromRational . toRational
+    
 now :: Number 
 now = Number (prim0 "now" 0)
 
