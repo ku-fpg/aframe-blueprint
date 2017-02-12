@@ -86,6 +86,7 @@ module Text.AFrame.DSL
     (?),
     -- * Variable Types
     Color,
+    rgb,
     Number,
     number,
     -- * Unique Property generator
@@ -519,6 +520,10 @@ instance DynamicProperty Color where
 
 instance IsString Color where
   fromString = Color . static LitText . pack
+  
+-- | color takes three values, rgb, between 0 and 1
+rgb :: RealFrac a => (a,a,a) -> Color
+rgb (r,g,b) = fromString $ "rgb(" ++ show(round(r*255)) ++ "," ++ show (round(g*255)) ++ "," ++ show (round(b*255)) ++ ")"
 
 ------------------------------------------------------
 -- Numbers
