@@ -86,6 +86,6 @@ main = do
         
 
 main2 :: [String] -> IO ()
-main2 ("hello-world":args) = webPage args example
-main2 ("hello-edit":args) = webPage args editExample
+main2 ["hello-world",arg] = webPage arg [] example
+main2 ["hello-edit",arg]  = webPage arg [] editExample
 main2 _ = error "usage: aframe-blueprint-example example-name output.html"
