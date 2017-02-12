@@ -45,6 +45,7 @@ module Text.AFrame.DSL
     dur,
     easing,
     fill,
+    fov,
     from,
     height,
     id_,
@@ -346,6 +347,9 @@ easing = attribute "easing"
 
 fill :: Attributes k => Text -> k ()
 fill = attribute "fill"
+
+fov :: Attributes k => Number -> k ()
+fov = attribute "fov"
 
 from :: Attributes k => Text -> k ()
 from = attribute "from"
