@@ -2,19 +2,13 @@
 #
 # Examples
 #
-boot::  examples/hello-world/index.html \
-        examples/hello-edit/index.html 
+boot::  examples/hello-world/index.html
 	echo done        
 
 examples/hello-world/index.html: examples/src/Main.hs
 	stack build
 	mkdir -p examples/hello-world
 	stack exec aframe-blueprint-examples hello-world $@
-
-examples/hello-edit/index.html: examples/src/Main.hs
-	stack build
-	mkdir -p examples/hello-edit
-	stack exec aframe-blueprint-examples hello-edit $@
 
 clean:
 	rm -f examples/*/*html

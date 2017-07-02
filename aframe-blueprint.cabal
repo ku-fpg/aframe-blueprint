@@ -1,5 +1,5 @@
 name:                aframe-blueprint
-version:             0.1.0.1
+version:             0.2.0
 -- synopsis:            
 -- description:         
 license:             BSD3
@@ -22,17 +22,7 @@ library
   -- other-modules:       
   -- other-extensions:    
   build-depends:       base >=4.8 && < 5.0
---               ,       aeson == 0.11.*
---               ,       bytestring
---               ,       filepath == 1.4.*
---               ,       natural-transformation == 0.3.1
---               ,       scotty == 0.11.*
                  ,       text == 1.2.*
---               ,       transformers == 0.4.*
---               ,       utf8-string == 1.0.*
---               ,       wai-middleware-static == 0.8.0
---               ,       stm == 2.4.* 
---               ,       wai-extra == 3.0.*
                  ,       taggy == 0.2.*
                  ,       containers == 0.5.*
                  ,       unordered-containers == 0.2.*
@@ -45,7 +35,7 @@ library
 executable aframe-blueprint-examples
   main-is:  Main.hs
   build-depends:         base >=4.8 && < 5.0
-                 ,       aframe-blueprint == 0.1.0.1
+                 ,       aframe-blueprint == 0.2.0
                  ,       text == 1.2.*
   
   GHC-options: -threaded
@@ -56,7 +46,7 @@ Test-Suite test-blueprint
      type:               exitcode-stdio-1.0
      main-is:            tests/Tests.hs
      build-depends:      base
-                 ,       aframe-blueprint == 0.1.0.1
+                 ,       aframe-blueprint == 0.2.0
                  ,       QuickCheck >= 2.8 && < 3.0
                  ,       random == 1.1.*
 

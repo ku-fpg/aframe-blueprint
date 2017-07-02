@@ -10,10 +10,6 @@ import Paths_aframe_blueprint
 webPage :: String -> [String] -> AFrame -> IO ()        
 webPage = webPageFromTemplate "static/index.html"
 
--- To remove
-webPageAnimated :: String -> [String] -> AFrame -> IO ()
-webPageAnimated = webPageFromTemplate "static/animated.html"
-
 -- | webPageFromTemplate takes a template, a target file, and a list of libraries to include, as well as a AFrame.
 webPageFromTemplate :: String -> String -> [String] -> AFrame -> IO ()
 webPageFromTemplate template fileOut libraries af = do
@@ -21,7 +17,7 @@ webPageFromTemplate template fileOut libraries af = do
     file <- readFile fileIn
     writeFile fileOut $ injectLibraries libraries $ injectAFrame af $ file
 
--- | inject 'AFrame' into an existing (HTML) file. Replaces complete "<a-scene>" element.
+-- | inject libraries into into an existing (HTML) file.
 injectLibraries :: [String] -> String -> String
 injectLibraries libraries str = findCloseHead str 0 
   where
