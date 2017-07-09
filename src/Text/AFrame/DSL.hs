@@ -3,6 +3,7 @@
 module Text.AFrame.DSL 
   (  -- * Entity DSL
     DSL,
+    AFrame,
     scene,
     assets,
     entity,
