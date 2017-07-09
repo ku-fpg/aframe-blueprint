@@ -2,7 +2,6 @@
 
 module Main where
 
-import Data.Text (Text)
 import Text.AFrame
 import Text.AFrame.WebPage
 import Text.AFrame.DSL 

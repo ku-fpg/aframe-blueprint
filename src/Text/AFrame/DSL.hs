@@ -98,9 +98,6 @@ import Data.Text(Text,unpack,pack)
 import qualified Data.Text as T
 import Data.String
 import Text.AFrame
-import Data.Monoid ((<>))
-import Data.Maybe (catMaybes)
-import Numeric
 
 ---------------------------------------------------------------------------------
 
@@ -273,7 +270,7 @@ fog = component "fog"
 
 -- | 'look_at' takes a selector or a vec3.
 look_at :: Component k => Property -> k ()
-look_at = component "look-at"	      -- TODO: revisit this to consider overloading
+look_at = component "look-at"  -- TODO: revisit this to consider overloading
 
 material :: Component k => List Attribute () -> k ()
 material = component "material"
@@ -422,7 +419,7 @@ instance IsString Color where
   
 -- | color takes three values, rgb, between 0 and 1
 rgb :: RealFrac a => (a,a,a) -> Color
-rgb (r,g,b) = fromString $ "rgb(" ++ show(round(r*255)) ++ "," ++ show (round(g*255)) ++ "," ++ show (round(b*255)) ++ ")"
+rgb (r,g,b) = fromString $ "rgb(" ++ show(round(r*255) :: Int) ++ "," ++ show (round(g*255) :: Int ) ++ "," ++ show (round(b*255) :: Int) ++ ")"
 
 ------------------------------------------------------
 -- Numbers
