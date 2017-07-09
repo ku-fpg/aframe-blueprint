@@ -26,9 +26,7 @@ module Text.AFrame.DSL
     -- * Asset DSL
     img,
     -- * Component DSL
-    animation,
     fog,
-    look_at,
     material,
     position,
     rotation,
@@ -62,11 +60,16 @@ module Text.AFrame.DSL
     repeat_,
     roughness,
     round',
+    selector,
     src,
     to,
     transparent,
+    vec3,
     wasdControlsEnabled,
     width,
+    -- * Kevin's 'kframe-extras' 
+    animation,
+    look_at,
     -- * Property builder sub-DSL
     List,
     Single,
@@ -136,7 +139,6 @@ instance Entity DSL where
   primitive (Label nm) m = DSL $ \ i0 -> case runDSL m i0 of
      (r1,i1,as1,af1) -> (r1,i1,[],[AFrame (Primitive nm) as1 af1])
 
-                    
 instance Component DSL where
   component :: ToProperty c => Label -> c -> DSL ()
   component lab c = DSL $ \ i0 -> ((),i0,[(lab,toProperty c)],[])
@@ -189,6 +191,9 @@ instance IsString (List Attribute ()) where
 data Single x a where
   Single :: x -> Single x ()
 
+instance ToProperty (Single Attribute ()) where
+  toProperty (Single x) = packProperty [x]
+
 instance Attributes (Single Attribute) where
   attribute lab c = Single (lab,toProperty c)
 
@@ -200,7 +205,7 @@ instance Component (Single Attribute) where
 -- Primitives
 
 entity :: DSL a -> DSL a
-entity = primitive "a-primitive"
+entity = primitive "a-entity"
 
 assets :: DSL a -> DSL a
 assets = primitive "a-assets" 
@@ -267,10 +272,6 @@ img = primitive "img"
 
 fog :: Component k => List Attribute () -> k ()
 fog = component "fog"
-
--- | 'look_at' takes a selector or a vec3.
-look_at :: Component k => Property -> k ()
-look_at = component "look-at"  -- TODO: revisit this to consider overloading
 
 material :: Component k => List Attribute () -> k ()
 material = component "material"
@@ -352,6 +353,9 @@ open = attribute "open"
 opacity :: Attributes k => Number -> k ()
 opacity = attribute "opacity"
 
+selector :: Attributes k => Text -> k ()
+selector = attribute "selector"
+
 radius :: Attributes k => Number -> k ()
 radius = attribute "radius"
 
@@ -378,6 +382,9 @@ to = attribute "to"
 
 transparent :: Attributes k => Bool -> k ()
 transparent = attribute "transparent"
+
+vec3 :: Attributes k => (Number,Number,Number) -> k ()
+vec3 = attribute "vec3"
 
 wasdControlsEnabled :: Attributes k => Bool -> k ()
 wasdControlsEnabled = attribute "wasd-controls-enabled" 
@@ -446,10 +453,16 @@ number = fromRational . toRational
 ------------------------------------------------------
 -- Animation support (aframe-animation-component)
 
-animation :: Text -> List Attribute () -> DSL ()
+animation :: Component k => Text -> List Attribute () -> k ()
 animation nm m = component (Label ("animation__" <> T.map f nm))
                            (attribute "property" nm >> m)
   where
       f '.' = '-'
       f c   = c
 
+-- | 'look_at' takes a selector or a vec3.
+look_at :: Component k => Single Attribute () -> k ()
+look_at = component "look-at"
+
+
+------------------------------------------------------
