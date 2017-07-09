@@ -71,8 +71,8 @@ module Text.AFrame.DSL
     -- * DSL classes
     ToProperty,
     toProperty,
-    PrimitiveEntity,
-    primitiveEntity,
+    Entity,
+    primitive,
     Component,
     component,
     Attributes, 
@@ -110,8 +110,8 @@ class Component f where
 class Attributes f where
   attribute :: ToProperty c => Label -> c -> f ()
 
-class (Attributes f, Component f) => PrimitiveEntity f where
-  primitiveEntity :: Text -> f a -> f a
+class (Attributes f, Component f) => Entity f where
+  primitive :: Text -> f a -> f a
 
 ---------------------------------------------------------------------------------
 -- Primitive DSL
@@ -131,9 +131,9 @@ instance Monad DSL where
      (r1,i1,as1,af1) -> case runDSL (k2 r1) i1 of
                              (r2,i2,as2,af2) -> (r2,i2,as1 ++ as2,af1 ++ af2)
 
-instance PrimitiveEntity DSL where
-  primitiveEntity :: Text -> DSL a -> DSL a
-  primitiveEntity nm m = DSL $ \ i0 -> case runDSL m i0 of
+instance Entity DSL where
+  primitive :: Text -> DSL a -> DSL a
+  primitive nm m = DSL $ \ i0 -> case runDSL m i0 of
      (r1,i1,as1,af1) -> (r1,i1,[],[AFrame (Primitive nm) as1 af1])
 
                     
@@ -149,11 +149,11 @@ uniqId :: DSL Property
 uniqId = DSL $ \ i -> (Property (pack $ "id_" ++ show i),i+1,[],[])
 
 scene :: DSL () -> AFrame
-scene m = case runDSL (primitiveEntity "a-scene" m) 0 of
+scene m = case runDSL (primitive "a-scene" m) 0 of
              (_, _, [], [f]) -> f
-             (_, _, _,  [] ) -> error "scene internal error: no top-level primitiveEntity"
+             (_, _, _,  [] ) -> error "scene internal error: no top-level primitive"
              (_, _, _,  [_]) -> error "scene internal error: top-level attribute"
-             (_, _, _,  _  ) -> error "scene internal error: to many top-level primitiveEntitys"
+             (_, _, _,  _  ) -> error "scene internal error: to many top-level primitives"
 
 
 ---------------------------------------------------------------------------------
@@ -200,70 +200,70 @@ instance Component (Single Attribute) where
 -- Primitives
 
 entity :: DSL a -> DSL a
-entity = primitiveEntity "a-entity"
+entity = primitive "a-primitive"
 
 animation :: DSL a -> DSL a
-animation = primitiveEntity "a-animation"
+animation = primitive "a-animation"
 
 assets :: DSL a -> DSL a
-assets = primitiveEntity "a-assets" 
+assets = primitive "a-assets" 
 
 box :: DSL a -> DSL a
-box = primitiveEntity "a-box"
+box = primitive "a-box"
 
 camera :: DSL a -> DSL a
-camera = primitiveEntity "a-camera"
+camera = primitive "a-camera"
 
 collada_model :: DSL a -> DSL a
-collada_model = primitiveEntity "a-collada-model"
+collada_model = primitive "a-collada-model"
 
 cone :: DSL a -> DSL a
-cone = primitiveEntity "a-cone"
+cone = primitive "a-cone"
 
 cursor :: DSL a -> DSL a
-cursor = primitiveEntity "a-cursor"
+cursor = primitive "a-cursor"
 
 curvedimage :: DSL a -> DSL a
-curvedimage = primitiveEntity "a-curvedimage"
+curvedimage = primitive "a-curvedimage"
 
 cylinder :: DSL a -> DSL a
-cylinder = primitiveEntity "a-cylinder"
+cylinder = primitive "a-cylinder"
 
 image :: DSL a -> DSL a
-image = primitiveEntity "a-image"
+image = primitive "a-image"
 
 light :: DSL a -> DSL a
-light = primitiveEntity "a-light"
+light = primitive "a-light"
 
 obj_model :: DSL a -> DSL a
-obj_model = primitiveEntity "a-obj-model"
+obj_model = primitive "a-obj-model"
 
 plane :: DSL a -> DSL a
-plane = primitiveEntity "a-plane"
+plane = primitive "a-plane"
 
 ring :: DSL a -> DSL a
-ring = primitiveEntity "a-ring"
+ring = primitive "a-ring"
 
 sky :: DSL a -> DSL a
-sky = primitiveEntity "a-sky"
+sky = primitive "a-sky"
 
 sphere :: DSL a -> DSL a
-sphere = primitiveEntity "a-sphere"
+sphere = primitive "a-sphere"
 
 torus :: DSL a -> DSL a
-torus = primitiveEntity "a-torus"
+torus = primitive "a-torus"
 
 video :: DSL a -> DSL a
-video = primitiveEntity "a-video"
+video = primitive "a-video"
 
 videosphere :: DSL a -> DSL a
-videosphere = primitiveEntity "a-videosphere"
+videosphere = primitive "a-videosphere"
 
 ---------------------------------------------------------------------------------------------------------
 -- Assets
 
 img :: DSL a -> DSL a
-img = primitiveEntity "img"
+img = primitive "img"
 
 ---------------------------------------------------------------------------------------------------------
 -- Components
