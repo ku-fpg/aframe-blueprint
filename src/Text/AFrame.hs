@@ -35,8 +35,10 @@ import Data.List as L
 import Data.Monoid ((<>))
 import Data.Monoid
 import qualified Text.Taggy as T
+import qualified Text.Taggy.Renderer as T
 import qualified Data.HashMap.Strict as H
 import Numeric
+import Text.Blaze.Renderer.Pretty (renderMarkup)
 
 -- | 'AFrame' describes the contents of an a-frame scene,
 --   and is stored as a classical rose tree.
@@ -132,8 +134,8 @@ readAFrame str = do
       ]
 
 showAFrame :: AFrame -> String
-showAFrame = LT.unpack . T.renderWith False . aFrameToElement
-    
+showAFrame = renderMarkup . T.toMarkup False . aFrameToElement
+
 
 data AFrameUpdate = AFrameUpdate 
     { aframePath     :: Path
