@@ -100,6 +100,7 @@ module Text.AFrame.DSL
 import Control.Monad
 import Data.Text(Text,unpack,pack)
 import qualified Data.Text as T
+import Data.Monoid
 import Data.String
 import Text.AFrame
 
@@ -447,10 +448,12 @@ number = fromRational . toRational
 ------------------------------------------------------
 -- Animation support (aframe-animation-component)
 
-animation :: Text -> DSL a -> DSL a
-animation nm m = primitive "a-animation" $ do
-    attribute "property" nm
-    m
+animation :: Text -> List Attribute () -> DSL ()
+animation nm m = component (Label ("animation__" <> T.map f nm))
+                           (attribute "property" nm >> m)
+  where
+      f '.' = '-'
+      f c   = c
 
 ------------------------------------------------------
 -- Macros
