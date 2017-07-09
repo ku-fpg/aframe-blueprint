@@ -4,7 +4,6 @@ module Text.AFrame.DSL
   (  -- * Entity DSL
     DSL,
     scene,
-    animation,
     assets,
     entity,
     box,
@@ -27,6 +26,7 @@ module Text.AFrame.DSL
     -- * Asset DSL
     img,
     -- * Component DSL
+    animation,
     fog,
     look_at,
     material,
@@ -42,14 +42,17 @@ module Text.AFrame.DSL
     begin,
     color,
     direction,
+    delay,
     dur,
     easing,
+    elasticity,
     fill,
     fov,
     from,
     height,
     id_,
     lookControlsEnabled,
+    loop,
     metalness,
     opacity,
     open,
@@ -58,6 +61,7 @@ module Text.AFrame.DSL
     radiusBottom,
     repeat_,
     roughness,
+    round',
     src,
     to,
     transparent,
@@ -199,9 +203,6 @@ instance Component (Single Attribute) where
 entity :: DSL a -> DSL a
 entity = primitive "a-primitive"
 
-animation :: DSL a -> DSL a
-animation = primitive "a-animation"
-
 assets :: DSL a -> DSL a
 assets = primitive "a-assets" 
 
@@ -305,14 +306,21 @@ begin = attribute "begin"
 color :: Attributes k => Color -> k ()
 color = attribute "color"
 
+delay :: Attributes k => Number -> k ()
+delay = attribute "delay"
+
+-- | direction "normal" | "alternative" | "reverse"
 direction :: Attributes k => Text -> k ()
 direction = attribute "direction"
 
-dur :: Attributes k => Int -> k ()
+dur :: Attributes k => Number -> k ()
 dur = attribute "dur"
 
 easing :: Attributes k => Text -> k ()
 easing = attribute "easing"
+
+elasticity :: Attributes k => Number -> k ()
+elasticity = attribute "elasticity"
 
 fill :: Attributes k => Text -> k ()
 fill = attribute "fill"
@@ -331,6 +339,10 @@ id_ = attribute "id"
 
 lookControlsEnabled :: Attributes k => Bool -> k ()
 lookControlsEnabled = attribute "look-controls-enabled" 
+
+loop :: Attributes k => Maybe Int -> k ()
+loop (Just n) = attribute "loop" n
+loop Nothing  = attribute "loop" True
 
 metalness :: Attributes k => Number -> k ()
 metalness = attribute "metalness"
@@ -355,6 +367,9 @@ repeat_ = attribute "repeat"
 
 roughness :: Attributes k => Number -> k ()
 roughness = attribute "roughness"
+
+round' :: Attributes k => Bool -> k ()
+round' = attribute "round"
 
 src :: Attributes k => Text -> k ()
 src = attribute "src"
@@ -428,6 +443,14 @@ type Number = Double
 
 number :: Real a => a -> Number
 number = fromRational . toRational
+
+------------------------------------------------------
+-- Animation support (aframe-animation-component)
+
+animation :: Text -> DSL a -> DSL a
+animation nm m = primitive "a-animation" $ do
+    attribute "property" nm
+    m
 
 ------------------------------------------------------
 -- Macros
