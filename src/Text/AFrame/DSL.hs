@@ -67,8 +67,6 @@ module Text.AFrame.DSL
     transparent,
     wasdControlsEnabled,
     width,
-    -- * DSL Macros
-    fromTo,
     -- * Property builder sub-DSL
     List,
     Single,
@@ -454,22 +452,4 @@ animation nm m = component (Label ("animation__" <> T.map f nm))
   where
       f '.' = '-'
       f c   = c
-
-------------------------------------------------------
--- Macros
-
--- | 'fromTo' simplifies the animations, by allowing the specification
---   of 'attribute' 'from' and 'to' in a single line.
---
---  Example: toFrom position (1,2,3) (4,5,6) 
---
-
-fromTo :: (Monad k, Attributes k, ToProperty c) => (c -> Single Attribute ()) -> c -> c -> k ()
-fromTo f x y | lbl1 == lbl2 = do attribute "attribute" lbl1
-                                 attribute "from"      a1
-                                 attribute "to"        a2
-             | otherwise = error "toFrom - the attribute builder was inconsistent"
-  where
-    Single (Label lbl1,Property a1) = f x
-    Single (Label lbl2,Property a2) = f y
 
