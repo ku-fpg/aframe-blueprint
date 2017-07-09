@@ -12,9 +12,5 @@ import qualified HelloWorld
 
 main :: IO ()
 main = do
-        args <- getArgs
-        main2 args
+        HelloWorld.main
 
-main2 :: [String] -> IO ()
-main2 ["hello-world",arg] = webPage arg [] HelloWorld.theScene
-main2 _ = error "usage: aframe-blueprint-example example-name output.html"

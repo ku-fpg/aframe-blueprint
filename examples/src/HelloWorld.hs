@@ -3,9 +3,10 @@
 module HelloWorld where
 
 import Text.AFrame.DSL as DSL
+import Text.AFrame.WebPage
 
-theScene :: AFrame
-theScene = scene $ do
+main :: IO ()
+main = webPage "examples/hello-world/index.html" [] $ scene $ do
 
   sphere $ do
     position (0,1.25,-1)
