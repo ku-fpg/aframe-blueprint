@@ -41,6 +41,15 @@ executable aframe-blueprint-examples
   hs-source-dirs:      examples/src
   default-language:    Haskell2010
 
+executable aframe-blueprint-draft
+  main-is:  Draft.hs
+  build-depends:         base >=4.8 && < 5.0
+                 ,       aframe-blueprint == 0.2.0
+  
+  GHC-options: -threaded
+  hs-source-dirs:      utils
+  default-language:    Haskell2010
+
 Test-Suite test-blueprint
   type:               exitcode-stdio-1.0
   main-is: Main.hs

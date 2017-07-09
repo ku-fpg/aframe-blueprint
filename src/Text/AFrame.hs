@@ -12,8 +12,9 @@ module Text.AFrame
   , setAttribute
   , getAttribute
   , resetAttribute
-   -- * render AFframe
+   -- * render and parse AFframe
   , showAFrame
+  , readAFrame
     -- * Property Builder
   , ToProperty(..)
     -- * nested Property
