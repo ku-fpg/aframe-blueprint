@@ -40,8 +40,9 @@ module Text.AFrame.DSL
     attribute_,
     begin,
     color,
-    direction,
+    dir,
     delay,
+    depth,
     dur,
     easing,
     elasticity,
@@ -310,9 +311,12 @@ color = attribute "color"
 delay :: Attributes k => Number -> k ()
 delay = attribute "delay"
 
--- | direction "normal" | "alternative" | "reverse"
-direction :: Attributes k => Text -> k ()
-direction = attribute "direction"
+depth :: Attributes k => Number -> k ()
+depth = attribute "depth"
+
+-- | dir "normal" | "alternative" | "reverse"
+dir :: Attributes k => Text -> k ()
+dir = attribute "dir"
 
 dur :: Attributes k => Number -> k ()
 dur = attribute "dur"
@@ -461,9 +465,8 @@ animation nm m = component (Label ("animation__" <> T.map f nm))
       f '.' = '-'
       f c   = c
 
--- | 'look_at' takes a selector or a vec3.
-look_at :: Component k => Single Attribute () -> k ()
+-- | 'look_at' takes a selector (or a vec3 in string format)
+look_at :: Component k => Text -> k ()
 look_at = component "look-at"
-
 
 ------------------------------------------------------

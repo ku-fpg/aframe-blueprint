@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>A-Frame Scene</title>
+    <meta name="description" content="A-Frame Scene">
+
+    <script src="https://aframe.io/releases/0.6.0/aframe.min.js"></script>    
+  <script src="https://unpkg.com/aframe-look-at-component@0.5.1/dist/aframe-look-at-component.min.js"></script>
+<script src="https://unpkg.com/aframe-animation-component@3.2.5/dist/aframe-animation-component.min.js"></script>
+</head>
+  <body>
+    <a-scene>
+        <a-entity id="look-cam" wasd-controls="" look-controls="" camera="userHeight: 1.6">
+        </a-entity>
+        <a-entity id="container" position="0.0 0.0 -4.0">
+            <a-sphere animation__position="property: position; dir: alternate; dur: 1500.0; to: 8 -3 -2; from: -8 6 -8; loop: true" color="#404040" radius="0.5" id="target">
+            </a-sphere>
+            <a-entity rotation="0.0 70.0 0.0" position="5.0 3.0 0.0">
+                <a-box look-at="#target" height="1.0" color="#01A1F1" width="1.0" depth="1.0" position="-2.0 0.0 -4.0">
+                </a-box>
+            </a-entity>
+            <a-box look-at="#target" height="1.0" color="#4CC3D9" width="1.0" depth="1.0" position="-4.0 0.0 -2.0">
+            </a-box>
+            <a-cylinder look-at="#target" height="2.0" color="#7BC8A4" radius="0.6" position="0.0 0.0 -2.0">
+            </a-cylinder>
+            <a-box look-at="#target" height="2.0" color="#F16745" width="0.5" depth="1.0" position="4.0 0.0 -2.0">
+            </a-box>
+            <a-cylinder look-at="#target" height="2.0" color="#7BC8A4" radius="0.2" position="-4.0 0.0 1.0">
+            </a-cylinder>
+            <a-box look-at="#target" height="0.25" color="#93648D" width="2.0" depth="1.0" position="0.0 0.0 1.0">
+            </a-box>
+            <a-box look-at="#target" height="0.5" color="#999" width="1.0" depth="2.0" position="4.0 0.0 1.0">
+            </a-box>
+            <a-box look-at="#look-cam" height="2.0" color="#FFC65D" width="2.0" depth="2.0" position="-6.0 2.5 -2.0">
+            </a-box>
+        </a-entity>
+        <a-sky color="#ECECEC">
+        </a-sky>
+    </a-scene>
+    
+  </body>
+</html>
+

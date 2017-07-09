@@ -36,6 +36,7 @@ executable aframe-blueprint-examples
   main-is:  Main.hs
   build-depends:         base >=4.8 && < 5.0
                  ,       aframe-blueprint == 0.2.0
+                 ,       text == 1.2.*
   
   GHC-options: -threaded
   hs-source-dirs:      examples/src
@@ -55,6 +56,7 @@ Test-Suite test-blueprint
   main-is: Main.hs
   build-depends:      base >= 4.8 && < 5.0
                ,      aframe-blueprint == 0.2.0
+                 ,       text == 1.2.*
 
   hs-source-dirs:      examples/src
   default-language:    Haskell2010

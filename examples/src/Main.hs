@@ -9,8 +9,9 @@ import Text.AFrame.DSL
 import System.Environment
 
 import qualified HelloWorld
+import qualified LookAt
 
 main :: IO ()
 main = do
         HelloWorld.main
-
+        LookAt.main
