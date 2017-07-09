@@ -111,7 +111,7 @@ class Attributes f where
   attribute :: ToProperty c => Label -> c -> f ()
 
 class (Attributes f, Component f) => Entity f where
-  primitive :: Text -> f a -> f a
+  primitive :: Label -> f a -> f a
 
 ---------------------------------------------------------------------------------
 -- Primitive DSL
@@ -132,8 +132,8 @@ instance Monad DSL where
                              (r2,i2,as2,af2) -> (r2,i2,as1 ++ as2,af1 ++ af2)
 
 instance Entity DSL where
-  primitive :: Text -> DSL a -> DSL a
-  primitive nm m = DSL $ \ i0 -> case runDSL m i0 of
+  primitive :: Label -> DSL a -> DSL a
+  primitive (Label nm) m = DSL $ \ i0 -> case runDSL m i0 of
      (r1,i1,as1,af1) -> (r1,i1,[],[AFrame (Primitive nm) as1 af1])
 
                     
