@@ -24,11 +24,9 @@ main = webPage "examples/look-at/index.html"
       color "#404040"
       radius 0.5
       id_ "target"
-      animation "position" $ do
+      animation position (8,-3,-2) (-8,6,-8) $ do
         dir "alternate"
         dur 1500
-        to "8 -3 -2"
-        from "-8 6 -8"
         loop Nothing
     
     entity $ do

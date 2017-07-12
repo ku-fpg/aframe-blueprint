@@ -29,9 +29,6 @@ module Text.AFrame.DSL
     -- * Component DSL
     fog,
     material,
-    position,
-    rotation,
-    scale,
     stats,
     template,
     wasd_controls,
@@ -48,7 +45,6 @@ module Text.AFrame.DSL
     elasticity,
     fill,
     fov,
-    from,
     height,
     id_,
     lookControlsEnabled,
@@ -56,15 +52,17 @@ module Text.AFrame.DSL
     metalness,
     opacity,
     open,
+    position,
     radius,
     radiusTop,
     radiusBottom,
     repeat_,
+    rotation,
     roughness,
     round',
     selector,
+    scale,
     src,
-    to,
     transparent,
     vec3,
     wasdControlsEnabled,
@@ -202,7 +200,6 @@ instance Attributes (Single Attribute) where
 instance Component (Single Attribute) where
   component lab c = Single (lab,toProperty c)
 
-
 ---------------------------------------------------------------------------------------------------------
 -- Primitives
 
@@ -278,15 +275,6 @@ fog = component "fog"
 material :: Component k => List Attribute () -> k ()
 material = component "material"
 
-position :: Component k => (Number,Number,Number) -> k ()
-position = component "position"
-
-rotation :: Component k => (Number,Number,Number) -> k ()
-rotation = component "rotation"
-
-scale :: Component k => (Number,Number,Number) -> k ()
-scale = component "scale"
-
 stats :: Component k => k ()
 stats = component "stats" ()
 
@@ -333,9 +321,6 @@ fill = attribute "fill"
 fov :: Attributes k => Number -> k ()
 fov = attribute "fov"
 
-from :: Attributes k => Text -> k ()
-from = attribute "from"
-
 height :: Attributes k => Number -> k ()
 height = attribute "height"
 
@@ -358,6 +343,9 @@ open = attribute "open"
 opacity :: Attributes k => Number -> k ()
 opacity = attribute "opacity"
 
+position :: Attributes k => (Number,Number,Number) -> k ()
+position = attribute "position"
+
 selector :: Attributes k => Text -> k ()
 selector = attribute "selector"
 
@@ -373,17 +361,20 @@ radiusBottom = attribute "radius-bottom"
 repeat_ :: Attributes k => Text -> k ()
 repeat_ = attribute "repeat"
 
+rotation :: Attributes k => (Number,Number,Number) -> k ()
+rotation = attribute "rotation"
+
 roughness :: Attributes k => Number -> k ()
 roughness = attribute "roughness"
 
 round' :: Attributes k => Bool -> k ()
 round' = attribute "round"
 
+scale :: Attributes k => (Number,Number,Number) -> k ()
+scale = attribute "scale"
+
 src :: Attributes k => Text -> k ()
 src = attribute "src"
-
-to :: Attributes k => Text -> k ()
-to = attribute "to"
 
 transparent :: Attributes k => Bool -> k ()
 transparent = attribute "transparent"
@@ -458,15 +449,19 @@ number = fromRational . toRational
 ------------------------------------------------------
 -- Animation support (aframe-animation-component)
 
-animation :: Component k => Text -> List Attribute () -> k ()
-animation nm m = component (Label ("animation__" <> T.map f nm))
-                           (attribute "property" nm >> m)
+animation :: (ToProperty a, Component k) => (a -> Single Attribute ()) -> a -> a -> List Attribute () -> k ()
+animation k from' to' m = component (Label ("animation__" <> T.map f nm)) $ do
+                           attribute "property" nm
+                           attribute "from" from'
+                           attribute "to"   to'
+                           m
   where
+      Single (Label nm,_) = k from'
       f '.' = '-'
       f c   = c
 
 -- | 'look_at' takes a selector (or a vec3 in string format)
-look_at :: Component k => Text -> k ()
+look_at :: Component k => Property -> k ()
 look_at = component "look-at"
 
 ------------------------------------------------------
