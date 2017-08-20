@@ -28,6 +28,7 @@ module Text.AFrame.DSL
     img,
     -- * Component DSL
     fog,
+    geometry,
     material,
     stats,
     template,
@@ -271,6 +272,9 @@ img = primitive "img"
 
 fog :: Component k => List Attribute () -> k ()
 fog = component "fog"
+
+geometry :: Component k => List Attribute () -> k ()
+geometry = component "geometry"
 
 material :: Component k => List Attribute () -> k ()
 material = component "material"
