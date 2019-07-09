@@ -1,4 +1,9 @@
-module Text.AFrame.WebPage where
+module Text.AFrame.WebPage
+ ( webPage
+ , Component
+ , aframe
+ , unpkg
+ ) where
         
 import Data.List as L
 
@@ -6,20 +11,30 @@ import Text.AFrame
 
 import Paths_aframe_blueprint
 
+type Component = String
+
 -- | webPage takes a target file, and a list of libraries to include, as well as a AFrame.
-webPage :: String -> [String] -> AFrame -> IO ()        
+webPage :: String -> [Component] -> AFrame -> IO () 
 webPage = webPageFromTemplate "static/index.html"
+
+type Version = String -- 0.9.2
+
+aframe :: Version -> Component
+aframe = ("https://aframe.io/releases/" ++) . (++ "/aframe.min.js")
+
+unpkg :: String -> Version -> Component
+unpkg lib ver = "https://unpkg.com/" ++ lib ++ "@" ++ ver ++ "/dist/" ++ lib ++ ".min.js"
 
 -- | webPageFromTemplate takes a template, a target file, and a list of libraries to include, as well as a AFrame.
 webPageFromTemplate :: String -> String -> [String] -> AFrame -> IO ()
 webPageFromTemplate template fileOut libraries af = do
     fileIn <- getDataFileName template 
     file <- readFile fileIn
-    writeFile fileOut $ injectLibraries libraries $ injectAFrame af $ file
+    writeFile fileOut $ injectComponents libraries $ injectAFrame af $ file
 
 -- | inject libraries into into an existing (HTML) file.
-injectLibraries :: [String] -> String -> String
-injectLibraries libraries str = findCloseHead str 0 
+injectComponents :: [String] -> String -> String
+injectComponents libraries str = findCloseHead str 0 
   where
     openTag  = "</head>"
     ls = unlines

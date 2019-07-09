@@ -6,7 +6,7 @@ import Text.AFrame.DSL as DSL
 import Text.AFrame.WebPage
 
 main :: IO ()
-main = webPage "examples/hello-world/index.html" [] $ scene $ do
+main = webPage "examples/hello-world/index.html" [aframe "0.9.2"] $ scene $ do
 
   sphere $ do
     position (0,1.25,-1)
