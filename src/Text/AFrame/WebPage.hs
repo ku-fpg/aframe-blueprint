@@ -22,8 +22,10 @@ type Version = String -- 0.9.2
 aframe :: Version -> Component
 aframe = ("https://aframe.io/releases/" ++) . (++ "/aframe.min.js")
 
+
+-- | Version can be empty, or @1.2.3, or @^1.2.3, etc.
 unpkg :: String -> Version -> Component
-unpkg lib ver = "https://unpkg.com/" ++ lib ++ "@" ++ ver ++ "/dist/" ++ lib ++ ".min.js"
+unpkg lib ver = "https://unpkg.com/" ++ lib ++ ver ++ "/dist/" ++ lib ++ ".min.js"
 
 -- | webPageFromTemplate takes a template, a target file, and a list of libraries to include, as well as a AFrame.
 webPageFromTemplate :: String -> String -> [String] -> AFrame -> IO ()

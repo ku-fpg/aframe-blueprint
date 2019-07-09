@@ -9,8 +9,8 @@ import Data.Text (Text)
 main :: IO ()
 main = webPage "examples/look-at/index.html" 
   [ aframe "0.9.2"
-  , unpkg "aframe-look-at-component" "0.8.x"
-  , unpkg "aframe-animation-component" "3.2.5"
+  , unpkg "aframe-look-at-component" "@0.8.x"
+  , unpkg "aframe-animation-component" "@3.2.5"
   ] $ scene $ do
   entity $ do
     attribute "look-controls" ()
