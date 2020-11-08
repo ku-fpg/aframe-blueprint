@@ -11,7 +11,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "budo --dir examples --port 8008 --live --open"
+    "dev": "npx budo --dir examples --port 8008 --live --open --ssl"
   },
   "repository": {
     "type": "git",
@@ -22,5 +22,8 @@
   "bugs": {
     "url": "https://github.com/ku-fpg/aframe-blueprint/issues"
   },
-  "homepage": "https://github.com/ku-fpg/aframe-blueprint"
+  "homepage": "https://github.com/ku-fpg/aframe-blueprint",
+  "dependencies": {
+    "ssl": "^1.0.0"
+  }
 }

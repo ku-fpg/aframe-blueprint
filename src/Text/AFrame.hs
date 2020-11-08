@@ -14,7 +14,7 @@ module Text.AFrame
   , resetAttribute
    -- * render and parse AFframe
   , showAFrame
-  , readAFrame
+--  , readAFrame
     -- * Property Builder
   , ToProperty(..)
     -- * nested Property
@@ -35,11 +35,13 @@ import Data.Maybe (listToMaybe)
 import Data.List as L
 import Data.Monoid ((<>))
 import Data.Monoid
-import qualified Text.Taggy as T
-import qualified Text.Taggy.Renderer as T
+--import qualified Text.Taggy as T
+--import qualified Text.Taggy.Renderer as T
 import qualified Data.HashMap.Strict as H
 import Numeric
 import Text.Blaze.Renderer.Pretty (renderMarkup)
+import Text.Blaze (Markup, (!))
+import Text.Blaze.Internal (customParent, textTag, customAttribute, textValue, preEscapedText)
 
 -- | 'AFrame' describes the contents of an a-frame scene,
 --   and is stored as a classical rose tree.
@@ -90,39 +92,43 @@ resetAttribute lbl (AFrame p as af) = AFrame p [ (l,p) | (l,p) <- as, l /= lbl ]
 
 -------------------------------------------------------------------------------------------------
 
--- | 'aFrameToElement' converts an 'AFrame' to an (XML) 'Element'. Total.
-aFrameToElement :: AFrame -> T.Element
-aFrameToElement (AFrame prim attrs rest) = T.Element prim' attrs' rest'
+-- | 'aFrameToMarkup' converts an 'AFrame' to an Blaze Markup'. Total.
+aFrameToMarkup :: AFrame -> Markup
+aFrameToMarkup (AFrame prim attrs rest) =
+    foldl (!) (customParent tag) attrs' $
+    mconcat rest'
   where
     Primitive prim' = prim
-    attrs'          = H.fromList
-                    $ [ (a,p)
+    tag = textTag prim'
+    attrs'          = [ customAttribute (textTag a) (textValue p)
                       | (Label a,Property p) <- attrs 
                       , not (prim' == "script" && a == "text")
                       ]
-    rest'           = [ T.NodeContent p
+    rest'           = [ preEscapedText p
                       | (Label "text",Property p) <- attrs 
                       , prim' == "script" 
                       ]
-                   ++ map (T.NodeElement . aFrameToElement) rest
+                   ++ map aFrameToMarkup rest
 
-
+{-
 -- | 'aFrameToElement' converts an (HTML) 'Element' to an 'AFrame'. Total.
 -- Strips out any text (which is not used by 'AFrame' anyway.)
-elementToAFrame :: T.Element -> AFrame
+elementToAFrame :: Element -> AFrame
 elementToAFrame ele = AFrame prim' attrs' content'
   where
-    prim'    = Primitive $ T.eltName $ ele
-    attrs'   = [ (Label a,Property p)| (a,p) <- H.toList $ T.eltAttrs ele ]
-            ++ [ (Label "text",Property txt)| T.NodeContent txt <- T.eltChildren ele ]
-    content' = [ elementToAFrame ele' | T.NodeElement ele' <- T.eltChildren ele ]
+    prim'    = Primitive $ eltName $ ele
+    attrs'   = [ (Label a,Property p)| (a,p) <- H.toList $ eltAttrs ele ]
+            ++ [ (Label "text",Property txt)| NodeContent txt <- eltChildren ele ]
+    content' = [ elementToAFrame ele' | NodeElement ele' <- eltChildren ele ]
+-}    
 
+{-
 -- | reads an aframe document. This can be enbedded in an XML-style document (such as HTML)
 readAFrame :: String -> Maybe AFrame
 readAFrame str = do
-    let doms = T.parseDOM True (LT.fromStrict $ pack str)
+    let doms = parseDOM True (LT.fromStrict $ pack str)
     case doms of
-      (T.NodeElement dom:_) -> do
+      (NodeElement dom:_) -> do
         let aframe  = elementToAFrame dom
         findAFrame aframe
       _ -> error $ show ("found strange DOM",doms)
@@ -133,9 +139,10 @@ readAFrame str = do
       [ x
       | Just x <- map findAFrame xs
       ]
+-}
 
 showAFrame :: AFrame -> String
-showAFrame = renderMarkup . T.toMarkup False . aFrameToElement
+showAFrame = renderMarkup . aFrameToMarkup
 
 
 data AFrameUpdate = AFrameUpdate 
